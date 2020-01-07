@@ -1,4 +1,4 @@
-package com.catalogo.controller;
+package ec.com.catalogo.catalogo;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

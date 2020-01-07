@@ -1,4 +1,4 @@
-package com.catalogo.resources;
+package ec.com.catalogo.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
