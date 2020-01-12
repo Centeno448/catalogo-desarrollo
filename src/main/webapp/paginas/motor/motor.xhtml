@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Listar Motores</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/plantillas/plantillaAdmin.xhtml">
+
+            <ui:define name="content">
+
+                <p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+                    <f:facet name="start">
+                        <h:graphicImage library="images" name="ajaxloading.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+
+                <h:form prependId="false" id="form">
+
+                     <p:messages id="messages" showDetail="true" closable="true">
+                         <p:autoUpdate />
+                    </p:messages>                  
+
+                    <p:fieldset legend="Datos del Motor de BDD" >
+
+                        <h:panelGrid columns="3" > 
+                            <p:outputLabel for="txtNombre" value="Nombre" />
+                            <p:inputText id="txtNombre" value="#{motorControlador.motor.nombre}" required="true"/>
+                            <p:message for="txtNombre" />
+
+                            <p:outputLabel for="txtVersion" value="Version" />
+                            <p:inputText id="txtVersion" value="#{motorControlador.motor.version}" required="true"/>
+                            <p:message for="txtVersion" />
+                        </h:panelGrid>                       
+                    </p:fieldset>    
+                    
+                    <p:commandButton value="Agregar" />
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>
