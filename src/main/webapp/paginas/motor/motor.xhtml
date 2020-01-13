@@ -22,28 +22,26 @@
                     <f:facet name="complete">
                         <h:outputText value="" />
                     </f:facet>
-                </p:ajaxStatus>
-
-                
+                </p:ajaxStatus>        
 
                 <p:messages id="messages" closable="true" showDetail="true" showSummary="true" >
                      <p:autoUpdate />
                 </p:messages>  
-                
                 <h:form id="form">       
                     <p:dataTable
                         id="motores" 
                         var="motor" 
-                        value="#{motorControlador.listarMotores()}" 
+                        value="#{motorBEAN.listaMotores}" 
                         editable="true" 
-                        editMode="cell"
                         rowKey="#{motor.idmotor}"
-                        selection="#{motorControlador.motor}" 
+                        selection="#{motorBEAN.motor}" 
                         selectionMode="single">
                         
                         <f:facet name="header">  
                             Lista de Motores
                         </f:facet>
+                        
+                        <p:ajax event="rowEdit" listener="#{motorBEAN.editListener}" />
                         
                         <p:column headerText="Nombre">
                             <p:cellEditor>
@@ -51,7 +49,7 @@
                                     <h:outputText value="#{motor.nombre}" />
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText value="123"/>
+                                    <p:inputText value="#{motor.nombre}"/>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
@@ -62,26 +60,30 @@
                                     <h:outputText value="#{motor.version}" />
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:inputText value="123" />
+                                    <p:inputText value="#{motor.version}" />
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
                         
+                        <p:column headerText="Editar" style="width:50px">
+                            <p:rowEditor />
+                        </p:column>
+                        
+                        
                         <f:facet name="footer">
                             <p:commandButton value="Regresar al inicio" action="/paginas/inicio" />
                             <p:spacer height="5px;"/>
-                            <p:commandButton value="Agregar" actionListener="#{motorControlador.reiniciarMotorSeleccionado}" oncomplete="PF('motorDialogo').show();" update="motores">
+                            <p:commandButton value="Agregar" actionListener="#{motorBEAN.reiniciarMotorSeleccionado}" oncomplete="PF('motorDialogo').show();" update="motores">
                                 <p:ajax event="dialogReturn" update="motores"/>
                             </p:commandButton>
                         </f:facet>
 
-                        <p:ajax event="cellEdit" listener="#{motorControlador.editListener}">
-                        </p:ajax>
+                        
                         
                     </p:dataTable>
 
                     <p:contextMenu for="motores">
-                        <p:menuitem value="Eliminar" update="motores" icon="ui-icon-close" actionListener="#{motorControlador.eliminarMotor}" ajax="false"/>
+                        <p:menuitem value="Eliminar" update="motores" icon="ui-icon-close" actionListener="#{motorBEAN.eliminarMotor}" ajax="false"/>
                     </p:contextMenu>
                 </h:form>
                 
@@ -90,15 +92,15 @@
                         <p:outputPanel id="motorDetalle" style="text-align:center;">
                             <p:panelGrid  columns="2" columnClasses="label,value">
                                 <h:outputText value="Nombre" />
-                                <h:inputText value="#{motorControlador.motor.nombre}" required="true"
+                                <h:inputText value="#{motorBEAN.motor.nombre}" required="true"
                                              requiredMessage="Ingrese el nombre del motor"/>
 
                                 <h:outputText value="Version" />
-                                <h:inputText value="#{motorControlador.motor.version}" required="true"
+                                <h:inputText value="#{motorBEAN.motor.version}" required="true"
                                              requiredMessage="Ingrese la version del motor"/>
 
                                 <f:facet name="footer">
-                                    <h:commandButton value="Agregar" actionListener="#{motorControlador.registrarMotor}" />
+                                    <h:commandButton value="Agregar" actionListener="#{motorBEAN.registrarMotor}" />
                                 </f:facet>
                             </p:panelGrid>
                         </p:outputPanel>

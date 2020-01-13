@@ -15,11 +15,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
 
-@Named
+@Named("motorBEAN")
 @ViewScoped
 public class MotorControlador implements Serializable{
     
@@ -32,8 +31,8 @@ public class MotorControlador implements Serializable{
     
     @PostConstruct
     public void init() {
-        motor = new Motor();
-        listaMotores = motorEJB.findAll();
+        this.motor = new Motor();
+        this.listaMotores = motorEJB.findAll();
     }
 
     public Motor getMotor() {
@@ -44,25 +43,13 @@ public class MotorControlador implements Serializable{
         this.motor = motor;
     }
     
-    public List<Motor> listarMotores() {
-        return motorEJB.findAll();
-    }
-    
     public void reiniciarMotorSeleccionado(){
         motor = new Motor();
     }
     
-    public void editListener(CellEditEvent event) {
+    public void editListener(RowEditEvent event) {
         try{
-            Motor motorEditado = motorEJB.find(Integer.parseInt(event.getRowKey()));
-            String column_name=event.getColumn().getHeaderText();
-            if(column_name.equals("Nombre")){
-                motorEditado.setNombre(event.getNewValue().toString());
-            }
-            else
-            {
-                motorEditado.setVersion(event.getNewValue().toString());
-            }
+            Motor motorEditado = (Motor) event.getObject();
             motorEJB.edit(motorEditado);
             FacesContext facesContext = FacesContext.getCurrentInstance();
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso", "Motor editado"
@@ -73,6 +60,14 @@ public class MotorControlador implements Serializable{
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "No se pudo editar"
                     + " el motor.\nError: " + ex.getMessage()));
         }
+    }
+
+    public List<Motor> getListaMotores() {
+        return listaMotores;
+    }
+
+    public void setListaMotores(List<Motor> listaMotores) {
+        this.listaMotores = listaMotores;
     }
     
     public void registrarMotor() {
