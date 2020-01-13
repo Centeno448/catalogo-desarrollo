@@ -124,7 +124,7 @@ public class Motor implements Serializable {
 
     @Override
     public String toString() {
-        return "ec.com.catalogo.modelo.Motor[ idmotor=" + idmotor + " ]";
+        return "ec.com.catalogo.modelo.Motor[ idmotor=" + idmotor + "\"" + " nombre= " + nombre + " version= " + version + "]";
     }
     
 }
