@@ -9,10 +9,7 @@ import ec.com.catalogo.modelo.Motor;
 import java.util.List;
 import javax.ejb.Local;
 
-/**
- *
- * @author diego
- */
+
 @Local
 public interface MotorFacadeLocal {
 
