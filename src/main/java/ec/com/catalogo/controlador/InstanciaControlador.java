@@ -32,8 +32,6 @@ public class InstanciaControlador implements Serializable{
     
     private Instancia instancia;
     
-    private Motor motor;
-    
     private List<Instancia> listaInstancias;
     
     private List<Motor> listaMotores;
