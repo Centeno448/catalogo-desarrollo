@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -33,14 +35,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Respaldo.findByPeriodicidad", query = "SELECT r FROM Respaldo r WHERE r.periodicidad = :periodicidad"),
     @NamedQuery(name = "Respaldo.findByTiempoHistorico", query = "SELECT r FROM Respaldo r WHERE r.tiempoHistorico = :tiempoHistorico"),
     @NamedQuery(name = "Respaldo.findByLugar", query = "SELECT r FROM Respaldo r WHERE r.lugar = :lugar"),
-    @NamedQuery(name = "Respaldo.findByObservacion", query = "SELECT r FROM Respaldo r WHERE r.observacion = :observacion"),
-    @NamedQuery(name = "Respaldo.findByRespaldocol", query = "SELECT r FROM Respaldo r WHERE r.respaldocol = :respaldocol")})
+    @NamedQuery(name = "Respaldo.findByObservacion", query = "SELECT r FROM Respaldo r WHERE r.observacion = :observacion")})
 public class Respaldo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "idrespaldo")
     private Integer idrespaldo;
     @Size(max = 100)
@@ -58,11 +59,8 @@ public class Respaldo implements Serializable {
     @Size(max = 45)
     @Column(name = "observacion")
     private String observacion;
-    @Size(max = 300)
-    @Column(name = "respaldocol")
-    private String respaldocol;
     @JoinColumn(name = "id_base", referencedColumnName = "idbase")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Base idBase;
 
     public Respaldo() {
@@ -118,14 +116,6 @@ public class Respaldo implements Serializable {
 
     public void setObservacion(String observacion) {
         this.observacion = observacion;
-    }
-
-    public String getRespaldocol() {
-        return respaldocol;
-    }
-
-    public void setRespaldocol(String respaldocol) {
-        this.respaldocol = respaldocol;
     }
 
     public Base getIdBase() {

@@ -36,7 +36,7 @@ public class RespaldoControlador implements Serializable{
     }
 
     public Respaldo getRespaldo() {
-        return respaldo;
+        return this.respaldo;
     }
 
     public void setRespaldo(Respaldo respaldo) {
@@ -44,7 +44,7 @@ public class RespaldoControlador implements Serializable{
     }
     
     public void reiniciarRespaldoSeleccionado(){
-        respaldo = new Respaldo();
+        this.respaldo = new Respaldo();
     }
     
     public void editListener(RowEditEvent event) {
@@ -71,18 +71,18 @@ public class RespaldoControlador implements Serializable{
     }
     
     public void registrarRespaldo() {
-        //try{
+        try{
             respaldoEJB.create(this.respaldo);
             this.respaldo = null;
             this.init();
             FacesContext facesContext = FacesContext.getCurrentInstance();
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso", "Respaldo agregado"
                     + " exitosamente."));
-        /*}catch(Exception ex){
+        }catch(Exception ex){
             FacesContext facesContext = FacesContext.getCurrentInstance();
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "No se pudo agregar"
                     + " el respaldo.\nError: " + ex.getMessage()));
-        }*/
+        }
     }
     
     public void eliminarRespaldo() {

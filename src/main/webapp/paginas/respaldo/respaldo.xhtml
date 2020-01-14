@@ -98,17 +98,6 @@
                             </p:cellEditor>
                         </p:column>
                         
-                        <p:column headerText="Respaldocol">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{respaldo.respaldocol}" />
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText value="#{respaldo.respaldocol}" />
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        
                         <p:column headerText="Editar" style="width:50px">
                             <p:rowEditor />
                         </p:column>
@@ -154,10 +143,6 @@
                                 <h:outputText value="Observación" />
                                 <h:inputText value="#{respaldoBEAN.respaldo.observacion}" required="true"
                                              requiredMessage="Ingrese la observación del respaldo"/>
-                                
-                                <h:outputText value="Respaldocol" />
-                                <h:inputText value="#{respaldoBEAN.respaldo.respaldocol}" required="true"
-                                             requiredMessage="Ingrese el respaldocol del respaldo"/>
                                                                 
                                 <f:facet name="footer">
                                     <h:commandButton value="Agregar" actionListener="#{respaldoBEAN.registrarRespaldo}" />
