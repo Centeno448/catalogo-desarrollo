@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Listar Instancias</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/plantillas/plantillaAdmin.xhtml">
+
+            <ui:define name="content">
+
+                <p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+                    <f:facet name="start">
+                        <h:graphicImage library="images" name="ajaxloading.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>        
+
+                <p:messages id="messages" closable="true" showDetail="true" showSummary="true" >
+                     <p:autoUpdate />
+                </p:messages>  
+                <h:form id="form">       
+                    <p:dataTable
+                        id="instancias" 
+                        var="instancia" 
+                        value="#{instanciaBean.listaInstancias}" 
+                        editable="true" 
+                        rowKey="#{instancia.idinstancia}"
+                        selection="#{instanciaBean.instancia}" 
+                        selectionMode="single">
+                        
+                        <f:facet name="header">  
+                            Lista de Instancias
+                        </f:facet>
+                        
+                        <p:ajax event="rowEdit" listener="#{instanciaBean.editListener}" />
+                        
+                        <p:column headerText="Nombre Instancia">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{instancia.nombre}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{instancia.nombre}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        
+                        <p:column headerText="Motor Asociado">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{instancia.idmotor.nombre}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{instancia.idmotor}" style="width:100%" converter="omnifaces.SelectItemsConverter">
+                                        <f:selectItems value="#{instanciaBean.listaMotores}" var="motor" itemValue="#{motor}" 
+                                                   itemLabel="#{motor.nombre}"/>
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        
+                        <p:column headerText="Editar" style="width:50px">
+                            <p:rowEditor />
+                        </p:column>
+                        
+                        
+                        <f:facet name="footer">
+                            <p:commandButton value="Regresar al inicio" action="/paginas/inicio" />
+                            <p:spacer height="5px;"/>
+                            <p:commandButton value="Agregar" actionListener="#{instanciaBean.reiniciarInstanciaSeleccionada}" oncomplete="PF('instanciaDialogo').show();" update="instancias">
+                                <p:ajax event="dialogReturn" update="instancias"/>
+                            </p:commandButton>
+                        </f:facet>
+                        
+                    </p:dataTable>
+
+                    <p:contextMenu for="instancias">
+                        <p:menuitem value="Eliminar" update="instancias" icon="ui-icon-close" actionListener="#{instanciaBean.eliminarInstancia}" ajax="false"/>
+                    </p:contextMenu>
+                </h:form>
+                
+                <h:form id="dialogoForm" prependId="false">
+                    <p:dialog header="Agregar Instancia" widgetVar="instanciaDialogo" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:outputPanel id="instanciaDetalle" style="text-align:center;">
+                            <p:panelGrid  columns="2" columnClasses="label,value">
+                                <h:outputText value="Nombre Instancia" />
+                                <h:inputText value="#{instanciaBean.instancia.nombre}" required="true"
+                                             requiredMessage="Ingrese el nombre de la instancia"/>
+
+                                <h:outputText value="Motor Asociado" />
+                                <h:selectOneMenu value="#{instanciaBean.instancia.idmotor}" style="width:100%" converter="omnifaces.SelectItemsConverter" 
+                                                 required="true"
+                                                 requiredMessage="Seleccione un motor.">
+                                    <f:selectItems value="#{instanciaBean.listaMotores}" var="motor" itemValue="#{motor}"
+                                                   itemLabel="#{motor.nombre}"/>
+                                </h:selectOneMenu>
+
+                                <f:facet name="footer">
+                                    <h:commandButton value="Agregar" actionListener="#{instanciaBean.registrarInstancia}" />
+                                </f:facet>
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>
