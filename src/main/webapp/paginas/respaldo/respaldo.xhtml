@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Listar Respaldos</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/plantillas/plantillaAdmin.xhtml">
+
+            <ui:define name="content">
+
+                <p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+                    <f:facet name="start">
+                        <h:graphicImage library="images" name="ajaxloading.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>        
+
+                <p:messages id="messages" closable="true" showDetail="true" showSummary="true" >
+                     <p:autoUpdate />
+                </p:messages>  
+                <h:form id="form">       
+                    <p:dataTable
+                        id="respaldos" 
+                        var="respaldo" 
+                        value="#{respaldoBEAN.listaRespaldos}" 
+                        editable="true" 
+                        rowKey="#{respaldo.idrespaldo}"
+                        selection="#{respaldoBEAN.respaldo}" 
+                        selectionMode="single">
+                        
+                        <f:facet name="header">  
+                            Lista de Respaldos
+                        </f:facet>
+                        
+                        <p:ajax event="rowEdit" listener="#{respaldoBEAN.editListener}" />
+                        
+                        <p:column headerText="Tipo">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{respaldo.tipo}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{respaldo.tipo}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        
+                        <p:column headerText="Periodicidad">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{respaldo.periodicidad}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{respaldo.periodicidad}" />
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        
+                        <p:column headerText="Tiempo Histórico">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{respaldo.tiempoHistorico}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{respaldo.tiempoHistorico}" />
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        
+                        <p:column headerText="Lugar">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{respaldo.lugar}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{respaldo.lugar}" />
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        
+                        <p:column headerText="Observación">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{respaldo.observacion}" />
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:inputText value="#{respaldo.observacion}" />
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        
+                        <p:column headerText="Editar" style="width:50px">
+                            <p:rowEditor />
+                        </p:column>
+                        
+                        
+                        <f:facet name="footer">
+                            <p:commandButton value="Regresar al inicio" action="/paginas/inicio" />
+                            <p:spacer height="5px;"/>
+                            <p:commandButton value="Agregar" actionListener="#{respaldoBEAN.reiniciarRespaldoSeleccionado}" oncomplete="PF('respaldoDialogo').show();" update="respaldos">
+                                <p:ajax event="dialogReturn" update="respaldos"/>
+                            </p:commandButton>
+                        </f:facet>
+
+                        
+                        
+                    </p:dataTable>
+
+                    <p:contextMenu for="respaldos">
+                        <p:menuitem value="Eliminar" update="respaldos" icon="ui-icon-close" actionListener="#{respaldoBEAN.eliminarRespaldo}" ajax="false"/>
+                    </p:contextMenu>
+                </h:form>
+                
+                <h:form id="dialogoForm" prependId="false">
+                    <p:dialog header="Agregar Respaldo" widgetVar="respaldoDialogo" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:outputPanel id="respaldoDetalle" style="text-align:center;">
+                            <p:panelGrid  columns="2" columnClasses="label,value">
+                                <h:outputText value="Tipo" />
+                                <h:inputText value="#{respaldoBEAN.respaldo.tipo}" required="true"
+                                             requiredMessage="Ingrese el tipo de respaldo"/>
+
+                                <h:outputText value="Periodicidad" />
+                                <h:inputText value="#{respaldoBEAN.respaldo.periodicidad}" required="true"
+                                             requiredMessage="Ingrese la periodicidad del respaldo"/>
+                                
+                                <h:outputText value="Tiempo Histórico" />
+                                <h:inputText value="#{respaldoBEAN.respaldo.tiempoHistorico}" required="true"
+                                             requiredMessage="Ingrese el tiempo histórico del respaldo"/>
+                                
+                                <h:outputText value="Lugar" />
+                                <h:inputText value="#{respaldoBEAN.respaldo.lugar}" required="true"
+                                             requiredMessage="Ingrese el lugar del respaldo"/>
+                                
+                                <h:outputText value="Observación" />
+                                <h:inputText value="#{respaldoBEAN.respaldo.observacion}" required="true"
+                                             requiredMessage="Ingrese la observación del respaldo"/>
+                                                                
+                                <f:facet name="footer">
+                                    <h:commandButton value="Agregar" actionListener="#{respaldoBEAN.registrarRespaldo}" />
+                                </f:facet>
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>
