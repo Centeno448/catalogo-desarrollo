@@ -35,16 +35,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Instancia implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idinstancia")
     private Integer idinstancia;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "nombre")
     private String nombre;
+    
     @JoinColumn(name = "idmotor", referencedColumnName = "idmotor")
     @ManyToOne(optional = false)
     private Motor idmotor;
